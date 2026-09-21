@@ -115,7 +115,7 @@ export const skillCategories: SkillCategory[] = [
   {
     title: 'AI Tools',
     icon: BrainCircuit,
-    skills: ['Cursor', 'Claude', 'GitLab', 'ChatGPT', 'GitHub Copilot'],
+    skills: ['Cursor', 'Claude', 'ChatGPT', 'GitHub Copilot'],
   },
 ];
 
