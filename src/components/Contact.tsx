@@ -8,18 +8,72 @@ type Status = 'idle' | 'success' | 'error';
 export default function Contact() {
   const ref = useScrollReveal<HTMLElement>();
   const [status, setStatus] = useState<Status>('idle');
+  const [isSubmitting, setIsSubmitting] = useState(false); 
   const [form, setForm] = useState({ name: '', email: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       setStatus('error');
       return;
     }
-    setStatus('success');
-    setForm({ name: '', email: '', message: '' });
-    setTimeout(() => setStatus('idle'), 4000);
-  };
+    // setStatus('success');
+    setIsSubmitting(true); 
+    setStatus('idle');
+ try { 
+  const response = await fetch('https://api.web3forms.com/submit', 
+    { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+      body: JSON.stringify({ access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY, name: form.name, email: form.email, message: form.message, subject: `New Portfolio Contact from ${form.name}`, from_name: 'Portfolio Contact Form', 
+      // Optional 
+      botcheck: '', }),
+     }); 
+      const data = await response.json(); 
+      if (data.success) 
+      { 
+        setStatus('success'); 
+        setForm({ name: '', email: '', message: '', }); 
+        setTimeout(() => { setStatus('idle'); }, 5000);
+
+       } else {
+       console.error('Web3Forms Error:', data); setStatus('error'); 
+      } 
+      } catch (error) {
+         console.error('Form submission error:', error); setStatus('error'); 
+        } finally { setIsSubmitting(false); } 
+      
+      
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //   setForm({ name: '', email: '', message: '' });
+  //   setTimeout(() => setStatus('idle'), 4000);
+  // };
+
+
+
+
 
   return (
     <section id="contact" ref={ref} className="relative py-24 px-6">
@@ -129,17 +183,29 @@ export default function Contact() {
             {status === 'error' && (
               <div className="flex items-center gap-2 text-error-500 text-sm animate-fade-in">
                 <AlertCircle className="w-5 h-5" />
-                <span>Please fill in all fields.</span>
+                <span> Please fill in all fields or try again later.</span>
               </div>
             )}
 
-            <button
+            {/* <button
               type="submit"
               className="w-full flex items-center justify-center gap-2 px-6 py-3.5 font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-[1.02]"
             >
               <Send className="w-4 h-4" />
               Send Message
+            </button> */}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3.5 font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <Send className="w-4 h-4" />
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
+
+
+
           </form>
         </div>
       </div>

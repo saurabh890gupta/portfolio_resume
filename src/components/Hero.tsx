@@ -1,7 +1,22 @@
 import { ArrowDown, MapPin, Sparkles } from 'lucide-react';
 import { personal, socialLinks } from '@/data/portfolio';
+import { Download } from 'lucide-react';
 
 export default function Hero() {
+
+
+    const handleNavigation = (path: string) => {
+    const sectionId = path === '/' ? 'hero' : path.substring(1);
+
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+
+    window.history.pushState({}, '', path);
+  };
+
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
       {/* Glow orbs */}
@@ -40,18 +55,40 @@ export default function Hero() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: '0.4s' }}>
-          <a
-            href="#projects"
+          {/* <a
+            href="projects"
             className="px-7 py-3.5 font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-105"
           >
             View My Work
-          </a>
-          <a
-            href="#contact"
+          </a> */}
+
+          <button onClick={() => handleNavigation('/projects')}
+                  className="px-7 py-3.5 font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-105"
+          >
+            View My Work
+          </button>
+          {/* <a
+            href="contact"
             className="px-7 py-3.5 font-medium text-slate-200 glass rounded-xl hover:border-primary-500/50 transition-all hover:scale-105"
           >
             Contact Me
-          </a>
+          </a> */}
+
+          {/* <button onClick={() => handleNavigation('/contact')}
+                  className="px-7 py-3.5 font-medium text-slate-200 glass rounded-xl hover:border-primary-500/50 transition-all hover:scale-105"
+          >
+            Contact Me
+          </button> */}
+
+          <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-2 px-7 py-3.5 font-medium text-slate-200 glass rounded-xl border border-slate-700/50 hover:text-white hover:border-primary-500/60 hover:bg-primary-500/10 hover:shadow-lg hover:shadow-primary-500/20 transition-all duration-300 hover:scale-105 active:scale-95"
+        >
+          <Download className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
+          <span>Download Resume</span>
+        </a>
         </div>
 
         {/* Social links */}
@@ -75,13 +112,20 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <a
-        href="#about"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-500 hover:text-primary-400 transition-colors animate-bounce-slow"
-        aria-label="Scroll down"
-      >
-        <ArrowDown className="w-6 h-6" />
-      </a>
+      <button
+          onClick={() => {
+            document.getElementById('about')?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+
+            window.history.pushState({}, '', '/about');
+          }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-500 hover:text-primary-400 transition-colors animate-bounce-slow"
+          aria-label="Scroll down"
+        >
+          <ArrowDown className="w-6 h-6" />
+        </button>
     </section>
   );
 }

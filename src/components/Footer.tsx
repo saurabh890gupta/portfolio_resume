@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Quick links */}
-          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          {/* <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -27,6 +27,28 @@ export default function Footer() {
               >
                 {link.label}
               </a>
+            ))}
+          </nav> */}
+
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {navLinks.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => {
+                  const sectionId =
+                    link.href === '/' ? 'hero' : link.href.substring(1);
+
+                  document.getElementById(sectionId)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  });
+
+                  window.history.pushState({}, '', link.href);
+                }}
+                className="text-sm text-slate-400 hover:text-primary-400 transition-colors"
+              >
+                {link.label}
+              </button>
             ))}
           </nav>
 

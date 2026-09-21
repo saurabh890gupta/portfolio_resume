@@ -14,6 +14,17 @@ export default function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
 
+
+  const handleNavigation = (path: string) => {
+    const sectionId = path === '/' ? 'hero' : path.substring(1);
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+    window.history.pushState({}, '', path);
+    closeMobile();
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -35,7 +46,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
+          {/* {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -43,13 +54,33 @@ export default function Navbar() {
             >
               {link.label}
             </a>
+          ))} */}
+          {navLinks.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => handleNavigation(link.href)}
+              className="px-4 py-2 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/50 transition-colors"
+            >
+              {link.label}
+            </button>
           ))}
-          <a
+
+
+
+
+          {/* <a
             href="#contact"
             className="ml-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-105"
           >
             Get in Touch
-          </a>
+          </a> */}
+
+          <button
+            onClick={() => handleNavigation('/contact')}
+            className="ml-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-105"
+          >
+            Get in Touch
+          </button>
         </div>
 
         {/* Mobile toggle */}
@@ -75,13 +106,20 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
+          {/* <a
             href="#contact"
             onClick={closeMobile}
             className="mt-2 px-4 py-3 text-center font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg"
           >
             Get in Touch
-          </a>
+          </a> */}
+
+           <button
+            onClick={() => handleNavigation('/contact')}
+            className="ml-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-105"
+          >
+            Get in Touch
+          </button>
         </div>
       )}
     </nav>

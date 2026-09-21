@@ -23,7 +23,7 @@ export default function Experience() {
           <div className="space-y-12">
             {experience.map((item, idx) => (
               <div
-                key={item.role}
+                key={`${item.role}-${idx}`}
                 className={`reveal relative flex flex-col md:flex-row gap-6 ${
                   idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
